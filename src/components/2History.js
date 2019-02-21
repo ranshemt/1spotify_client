@@ -1,34 +1,71 @@
-import React from 'react'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import React, {Component} from 'react'
+import {Paper, Grid, GridList, GridListTile, GridListTileBar} from '@material-ui/core'
 
 import IMG from '../images/screen1.jpg'
+import mergeIMG from '../images/command2_merge.png'
+import newIMG from '../images/command1_newPL.png'
+//custom style for <Paper> component
 var styles = {
-    backgroundImage: `url(${IMG})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
-    backgroundAttachment: "fixed",
-    height: '50px',
-    width: '50px',
-    borderRadius: '50%'
+    backgroundColor: '#1DB954',
+    width: '100%',
+    height: '300px',
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex'
 }
-const History = () => {
-    return(
-        <Grid container item xs={12} justify='center' alignItems='center'>
-            <Paper
-                style={{
-                    ...styles
-                }}
-            >
-                <Button variant="contained" color="primary">
-                    Wow, I'm a button
-                </Button>
-            </Paper>
-            
-        </Grid>
-    )
+//
+class History extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            history: []
+        }
+    }
+    componentDidMount(){
+        //call API getHistory/id
+        let url = 'https://spotify-merge.herokuapp.com/getHistory/' + this.props.UID
+        //console.log(`fetch url: ${url}`)
+        let options = {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch(url, options)
+            .then(res => res.json())
+            .then(body => {this.setState(prevState => ({
+                    history: [...body.actualResponse.data.history]
+                }))
+            })
+            .catch(err => {
+                console.log(`status code: ${err.statusCode}`)
+                console.log(`message: ${err.message}`)
+            })
+    }
+    //
+    render(){
+        styles.height = this.props.HEIGHT
+        return(
+            <Grid container item xs={12} justify='center' alignItems='center'>                
+                <Paper
+                    style={{...styles}}
+                    square
+                >
+                    <GridList cols={5} style={{flexWrap: 'nowrap', transform: 'translateZ(0)'}}>
+                        {this.state.history.map(tile => (
+                            <GridListTile key={tile._id}>
+                                <img src={newIMG} alt={tile.desc} />
+                                <GridListTileBar
+                                    title={tile.desc}
+                                />
+                            </GridListTile>
+                        ))}
+                    </GridList>
+                </Paper>
+            </Grid>
+        )
+    }
 }
 
 export default History

@@ -1,34 +1,68 @@
-import React from 'react'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import React, {Component} from 'react'
+import {Paper, Grid, GridList, GridListTile, GridListTileBar} from '@material-ui/core'
 
-import IMG from '../images/screen1.jpg'
+//custom style for <Paper> component
 var styles = {
-    backgroundImage: `url(${IMG})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
-    backgroundAttachment: "fixed",
-    height: '50px',
-    width: '50px',
-    borderRadius: '50%'
+    backgroundColor: '#1DB954',
+    width: '100%',
+    height: '300px',
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex'
 }
-const Playlists = () => {
-    return(
-        <Grid container item xs={12} justify='center' alignItems='center'>
-            <Paper
-                style={{
-                    ...styles
-                }}
-            >
-                <Button variant="contained" color="primary">
-                    Wow, I'm a button
-                </Button>
-            </Paper>
-            
-        </Grid>
-    )
+//
+class Playlists extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            playlists: []
+        }
+    }
+    componentDidMount(){
+        //call API getHistory/id
+        let url = 'https://spotify-merge.herokuapp.com/getPlaylists/' + this.props.UID
+        //console.log(`fetch url: ${url}`)
+        let options = {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch(url, options)
+            .then(res => res.json())
+            .then(body => {this.setState(prevState => ({
+                playlists: [...body.actualResponse.data.playlists]
+                }))
+            })
+            .catch(err => {
+                console.log(`status code: ${err.statusCode}`)
+                console.log(`message: ${err.message}`)
+            })
+    }
+    //
+    render(){
+        styles.height = this.props.HEIGHT
+        return(
+            <Grid container item xs={12} justify='center' alignItems='center'>                
+                <Paper
+                    style={{...styles}}
+                    square
+                >
+                    <GridList cols={5} style={{flexWrap: 'nowrap', transform: 'translateZ(0)'}}>
+                        {this.state.playlists.map(tile => (
+                            <GridListTile key={tile.id}>
+                                <img src={tile.img} alt={tile.name} />
+                                <GridListTileBar
+                                    title={tile.name}
+                                />
+                            </GridListTile>
+                        ))}
+                    </GridList>
+                </Paper>
+            </Grid>
+        )
+    }
 }
 
 export default Playlists

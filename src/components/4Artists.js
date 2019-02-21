@@ -1,34 +1,81 @@
-import React from 'react'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import React, {Component} from 'react'
+import {Paper, Grid, GridList, GridListTile, GridListTileBar, IconButton} from '@material-ui/core'
+import StarBorderIcon from '@material-ui/icons/StarBorder'
+import screen1IMG from '../images/screen1.jpg'
 
-import IMG from '../images/screen1.jpg'
+//custom style for <Paper> component
 var styles = {
-    backgroundImage: `url(${IMG})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
-    backgroundAttachment: "fixed",
-    height: '50px',
-    width: '50px',
-    borderRadius: '50%'
+    backgroundColor: '#1DB954',
+    width: '100%',
+    height: '300px',
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex'
 }
-const Artists = () => {
-    return(
-        <Grid container item xs={12} justify='center' alignItems='center'>
-            <Paper
-                style={{
-                    ...styles
-                }}
-            >
-                <Button variant="contained" color="primary">
-                    Wow, I'm a button
-                </Button>
-            </Paper>
-            
-        </Grid>
-    )
+//
+class Artists extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            artists: []
+        }
+        this.createPL = this.createPL.bind(this)
+    }
+    createPL(){
+        console.log('createPL()')
+    }
+    //
+    componentDidMount(){
+        let url = 'https://spotify-merge.herokuapp.com/getTopArtists/' + this.props.UID
+        //console.log(`fetch url: ${url}`)
+        let options = {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch(url, options)
+            .then(res => res.json())
+            .then(body => {this.setState(prevState => ({
+                artists: [...body.actualResponse.data.artists]
+                }))
+            })
+            .catch(err => {
+                console.log(`status code: ${err.statusCode}`)
+                console.log(`message: ${err.message}`)
+            })
+    }
+    //
+    render(){
+        styles.height = this.props.HEIGHT
+        //console.log(`in Artists: state = ${JSON.stringify(this.state.artists)}`)
+        return(
+            <Grid container item xs={12} justify='center' alignItems='center'>                
+                <Paper
+                    style={{...styles}}
+                    square
+                >
+                    <GridList cols={5} style={{flexWrap: 'nowrap', transform: 'translateZ(0)'}}>
+                        {this.state.artists.map(tile => (
+                            <GridListTile key={tile.id}>
+                                <img src={screen1IMG} alt={tile.name} />
+                                <GridListTileBar
+                                    title={tile.name}
+                                    actionIcon={
+                                        <IconButton onClick={this.createPL}>
+                                            <StarBorderIcon color="primary" />
+                                        </IconButton>
+                                    }
+                                />
+                                    
+                            </GridListTile>
+                        ))}
+                    </GridList>
+                </Paper>
+            </Grid>
+        )
+    }
 }
 
 export default Artists

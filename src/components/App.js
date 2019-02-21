@@ -16,7 +16,7 @@ class App extends Component{
         this.getData = this.getData.bind(this)
     }
     getData(val){
-        console.log(`in App: received height = ${val}`)
+        //console.log(`in App: received height = ${val}`)
         this.setState(prevState => ({
             UID: prevState.UID,
             screen_height: val
@@ -31,14 +31,14 @@ class App extends Component{
         })
     }
     render(){
-        console.log(`in App: screen_height = ${this.state.screen_height}`)
+        //console.log(`in App: screen_height = ${this.state.screen_height}`)
         return(
             <div>
                 <Grid container>
                     <Welcome sendData={this.getData} UID={this.state.UID} />
-                    <History UID={this.state.UID} />
-                    <Playlists UID={this.state.UID} />
-                    <Artists UID={this.state.UID} />
+                    <History UID={this.state.UID} HEIGHT={this.state.screen_height} />
+                    <Playlists UID={this.state.UID} HEIGHT={this.state.screen_height} />
+                    <Artists UID={this.state.UID} HEIGHT={this.state.screen_height} />
                 </Grid>
             </div>
         )

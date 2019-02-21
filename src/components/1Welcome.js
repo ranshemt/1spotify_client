@@ -83,6 +83,7 @@ class Welcome extends Component{
         //sizing
         window.removeEventListener('resize', this.handleResize)
         this.calcHeight()
+        this.props.sendData(styles.calcStyle.height)
     }
     //
     render(){
