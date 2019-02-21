@@ -10,7 +10,6 @@ import {Route} from 'react-router-dom'
 import App from '../components/App'
 import Login from '../components/Login'
 import Err from '../components/Err'
-import Screen1 from '../components/Screen1'
 
 //
 //stateless component!

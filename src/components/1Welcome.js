@@ -28,7 +28,7 @@ var avatar_style = {
     height: '10vw'
 }
 //
-class Screen1 extends Component{
+class Welcome extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -37,24 +37,25 @@ class Screen1 extends Component{
         }
         //sizing
         this.handleResize = this.handleResize.bind(this)
-        this.makeRatio = this.makeRatio.bind(this)
+        this.calcHeight = this.calcHeight.bind(this)
     }
-    makeRatio(){
+    calcHeight(){
         let w = window.innerWidth
         let h = parseFloat(w * RATIO).toFixed(2)
         styles.calcStyle.height = `${h}px`
         //console.log(`ratio = ${RATIO}. width = ${w}. height = ${h}`)
     }
     handleResize(e){
-        this.makeRatio()
+        this.calcHeight()
         this.setState(this.state)
+        this.props.sendData(styles.calcStyle.height)
     }
     componentDidMount(){
         //sizing
         window.addEventListener('resize', this.handleResize)
         //call API welcomeMsg/id
         let url = 'https://spotify-merge.herokuapp.com/welcomeMsg/' + this.props.UID
-        console.log(`fetch url: ${url}`)
+        //console.log(`fetch url: ${url}`)
         let options = {
             method: "GET",
             headers: {
@@ -81,11 +82,11 @@ class Screen1 extends Component{
     componentWillMount(){
         //sizing
         window.removeEventListener('resize', this.handleResize)
-        this.makeRatio()
+        this.calcHeight()
     }
     //
     render(){
-        console.log(`in Screen1: this.state.user_name = ${this.state.user_name}`)
+        // console.log(`in Screen1: this.state.user_name = ${this.state.user_name}`)
         return(
             <Grid container item xs={12} justify='center' alignItems='center'>
                 {/* {console.log(`in render() styles.calcStyle.height = ${styles.calcStyle.height}`)} */}
@@ -111,4 +112,4 @@ class Screen1 extends Component{
     }
 }
 
-export default Screen1
+export default Welcome

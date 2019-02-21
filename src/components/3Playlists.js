@@ -10,11 +10,11 @@ var styles = {
     backgroundPosition: "center center",
     backgroundSize: "cover",
     backgroundAttachment: "fixed",
-    height: '500px',
-    width: '500px',
+    height: '50px',
+    width: '50px',
     borderRadius: '50%'
 }
-const Screen2 = () => {
+const Playlists = () => {
     return(
         <Grid container item xs={12} justify='center' alignItems='center'>
             <Paper
@@ -31,4 +31,4 @@ const Screen2 = () => {
     )
 }
 
-export default Screen2
+export default Playlists

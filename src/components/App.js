@@ -1,15 +1,26 @@
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 //
-import Screen1 from './Screen1'
-import Screen2 from './Screen2'
+import Welcome from './1Welcome'
+import History from './2History'
+import Playlists from './3Playlists'
+import Artists from './4Artists'
 class App extends Component{
     constructor(props){
         super(props)
         this.state = {
-            UID: 'default_uid'
+            UID: 'default_uid',
+            screen_height: '100px'
         }
         //bind methods
+        this.getData = this.getData.bind(this)
+    }
+    getData(val){
+        console.log(`in App: received height = ${val}`)
+        this.setState(prevState => ({
+            UID: prevState.UID,
+            screen_height: val
+        }))
     }
     componentWillMount(){
         //set state
@@ -20,11 +31,14 @@ class App extends Component{
         })
     }
     render(){
+        console.log(`in App: screen_height = ${this.state.screen_height}`)
         return(
             <div>
                 <Grid container>
-                    <Screen1 UID={this.state.UID} />
-                    <Screen2/>
+                    <Welcome sendData={this.getData} UID={this.state.UID} />
+                    <History UID={this.state.UID} />
+                    <Playlists UID={this.state.UID} />
+                    <Artists UID={this.state.UID} />
                 </Grid>
             </div>
         )
