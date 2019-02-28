@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 var apiPathName = 'https://spotify-merge.herokuapp.com'
+var srcURL = window.location.href
 //custom style for <Paper> component
 var styles = {
     backgroundColor: '#1DB954',
@@ -24,7 +25,7 @@ const Login = () => {
                 <Button
                     variant="contained"
                     color="secondary"
-                    href={apiPathName+'/login'}
+                    href={`${apiPathName}/login?srcURL=${srcURL}`}
                 >
                     Wow! I'm a login button
                 </Button>

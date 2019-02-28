@@ -22,8 +22,26 @@ class Artists extends Component{
         }
         this.createPL = this.createPL.bind(this)
     }
-    createPL(){
-        console.log('createPL()')
+    createPL = param => e => {
+        console.log(`createPL() with artist id = ${param}`)
+        let url = 'https://spotify-merge.herokuapp.com/makePLbyArtist/' + this.props.UID + '&' + param
+        //console.log(`fetch url: ${url}`)
+        let options = {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+        fetch(url, options)
+            .then(res => res.json())
+            .then(body => {
+                console.log(`new playlist created. DATA: ${body.actualResponse.data}`)
+                this.props.myForceUpdate()
+            })
+            .catch(err => {
+                console.log(`status code: ${err.statusCode}`)
+                console.log(`message: ${err.message}`)
+            })
     }
     //
     componentDidMount(){
@@ -63,7 +81,7 @@ class Artists extends Component{
                                 <GridListTileBar
                                     title={tile.name}
                                     actionIcon={
-                                        <IconButton onClick={this.createPL}>
+                                        <IconButton onClick={this.createPL(tile.id)}>
                                             <StarBorderIcon color="primary" />
                                         </IconButton>
                                     }
