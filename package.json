@@ -1,5 +1,6 @@
 {
   "name": "1spotify_client_final",
+  "homepage":".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

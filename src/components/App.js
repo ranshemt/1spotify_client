@@ -45,7 +45,7 @@ class App extends Component{
                     <Welcome sendData={this.getData} UID={this.state.UID} />
                     <History UID={this.state.UID} HEIGHT={this.state.screen_height} />
                     <Playlists UID={this.state.UID} HEIGHT={this.state.screen_height} />
-                    <Artists UID={this.state.UID} HEIGHT={this.state.screen_height} myForceUpdate={this.myForceUpdate}/>
+                    <Artists UID={this.state.UID} HEIGHT={this.state.screen_height} />
                 </Grid>
             </div>
         )

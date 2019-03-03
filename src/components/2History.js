@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {Paper, Grid, GridList, GridListTile, GridListTileBar} from '@material-ui/core'
 
-import IMG from '../images/screen1.jpg'
-import mergeIMG from '../images/command2_merge.png'
 import newIMG from '../images/command1_newPL.png'
 //custom style for <Paper> component
 var styles = {
